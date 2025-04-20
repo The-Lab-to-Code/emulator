@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>EmulatorJS-Style Emulator</title>
+  <style>
+    body {
+      background: #181c24;
+      margin: 0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+    #emulator-container {
+      max-width: 900px;
+      margin: 40px auto;
+      box-shadow: 0 10px 40px #000a, 0 1.5px 4px #0004;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #232a34;
+      position: relative;
+    }
+    #game-screen {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: #000;
+      min-height: 480px;
+    }
+  </style>
+</head>
+<body>
+  <div id="emulator-container">
+    <div id="game-screen"></div>
+  </div>
+  <script>
+    // EmulatorJS embed options for UI customization
+    EJS_player = '#game-screen';
+    EJS_core = 'nes'; // Change as needed: nes, snes, gba, genesis, etc.
+    EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
+    EJS_gameUrl = 'YOUR_ROM_URL.rom'; // Replace with your ROM file
+    EJS_gameName = 'Super Mario Bros.'; // Displayed in UI
+    EJS_color = '#1AAFFF'; // EmulatorJS blue
+    EJS_alignStartButton = 'center';
+    EJS_backgroundImage = ''; // Optional: set a background image
+    EJS_backgroundColor = '#181c24';
+    EJS_backgroundBlur = true;
+    EJS_fullscreenOnLoaded = false;
+    EJS_language = 'en-US';
+    EJS_startOnLoaded = false;
+  </script>
+  <script src="https://cdn.emulatorjs.org/stable/data/loader.js"></script>
+</body>
+</html>
