@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>EmulatorJS-Style Emulator</title>
+  <title>EmulatorJS ROM Loader</title>
   <style>
     body {
       background: #181c24;
@@ -18,33 +18,85 @@
       background: #232a34;
       position: relative;
     }
+    #emulator-header {
+      display: flex;
+      align-items: center;
+      background: #232a34;
+      color: #fff;
+      padding: 12px 20px;
+      font-size: 1.2em;
+      font-weight: bold;
+      border-bottom: 2px solid #1AAFFF;
+    }
+    #emulator-header img {
+      margin-right: 16px;
+    }
+    #game-title {
+      flex: 1;
+    }
     #game-screen {
       width: 100%;
       aspect-ratio: 16/9;
       background: #000;
       min-height: 480px;
     }
+    #rom-picker {
+      display: block;
+      margin: 20px auto;
+      font-size: 1em;
+      color: #fff;
+      background: #1AAFFF;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    @media (max-width: 600px) {
+      #game-screen {
+        min-height: 160px;
+      }
+    }
   </style>
 </head>
 <body>
+  <input type="file" id="rom-picker" accept=".nes,.sfc,.smc,.gba,.gb,.gbc,.bin,.gen,.md,.sms,.gg,.zip">
   <div id="emulator-container">
+    <div id="emulator-header">
+      <img src="https://emulatorjs.org/logo.png" alt="EmulatorJS Logo" height="40">
+      <span id="game-title">Select a ROM to Play</span>
+    </div>
     <div id="game-screen"></div>
   </div>
   <script>
-    // EmulatorJS embed options for UI customization
-    EJS_player = '#game-screen';
-    EJS_core = 'nes'; // Change as needed: nes, snes, gba, genesis, etc.
-    EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
-    EJS_gameUrl = 'YOUR_ROM_URL.rom'; // Replace with your ROM file
-    EJS_gameName = 'Super Mario Bros.'; // Displayed in UI
-    EJS_color = '#1AAFFF'; // EmulatorJS blue
-    EJS_alignStartButton = 'center';
-    EJS_backgroundImage = ''; // Optional: set a background image
-    EJS_backgroundColor = '#181c24';
-    EJS_backgroundBlur = true;
-    EJS_fullscreenOnLoaded = false;
-    EJS_language = 'en-US';
-    EJS_startOnLoaded = false;
+    // EmulatorJS configuration
+    window.EJS_player = '#game-screen';
+    window.EJS_core = 'auto'; // 'auto' will try to detect the core based on file extension
+    window.EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
+    window.EJS_gameUrl = '';
+    window.EJS_gameName = '';
+    window.EJS_color = '#1AAFFF';
+    window.EJS_alignStartButton = 'center';
+    window.EJS_backgroundColor = '#181c24';
+    window.EJS_backgroundBlur = true;
+    window.EJS_fullscreenOnLoaded = false;
+    window.EJS_language = 'en-US';
+    window.EJS_startOnLoaded = false;
+
+    // File picker logic
+    document.getElementById('rom-picker').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        // Set game name in header
+        document.getElementById('game-title').textContent = file.name;
+        // Read the file as a Data URL
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+          window.EJS_gameUrl = evt.target.result;
+          window.EJS_loadGame(); // This will re-initialize the emulator with the new ROM
+        };
+        reader.readAsDataURL(file);
+      }
+    });
   </script>
   <script src="https://cdn.emulatorjs.org/stable/data/loader.js"></script>
 </body>
